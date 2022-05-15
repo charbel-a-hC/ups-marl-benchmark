@@ -1,3 +1,6 @@
 [submodule "highway-env"]
 	path = highway-env
 	url = https://github.com/eleurent/highway-env.git
+[submodule "rl-agents"]
+	path = rl-agents
+	url = https://github.com/eleurent/rl-agents.git
