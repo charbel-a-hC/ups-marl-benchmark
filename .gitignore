@@ -1,2 +1,11 @@
 # Jupyter Checkpoints
 .ipynb_checkpoints/
+
+# LaTex files
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+data/*/*.log
+*.synctex.gz

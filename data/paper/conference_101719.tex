@@ -34,7 +34,7 @@ charbel-a-h@outlook.com}
 \end{IEEEkeywords}
 
 \section{Introduction}
-
+hello \cite{DBLP:journals/corr/ZhuPIE17}
 
 \section{Related Work}
 
@@ -67,7 +67,7 @@ h^{[i]} = LeakyRELU(W^{[i-1]}h^{[i-1]}+b{[i-1]})\label{Gen LeakyRELU}
 \end{equation}
 \begin{math}\alpha \end{math}, with h[i] \begin{math}\epsilon R^{16\alpha2^i}\end{math} and we output the vector o \begin{math}\epsilon R^{16,384}\end{math} via
 \begin{equation}
-o =tanh(W^{[L]}h^{[L]}+b{[L]})
+o =\tanh(W^{[L]}h^{[L]}+b{[L]})
 \end{equation}
 Where L is the final layer.
 
@@ -86,8 +86,7 @@ o = sigmoid(W^{[L]}h^{[L]}+b{[L]})
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=75mm]{1.png}}
-\caption{Random Cows and Horses Images from Original Dataset}
-\label{fig}
+\caption{Random Cows and Horses Images from Original Dataset}\label{fig1}
 \end{figure}
 
 \subsection{Evaluation Metrics}\label{AA}
@@ -101,20 +100,20 @@ o = sigmoid(W^{[L]}h^{[L]}+b{[L]})
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=75mm]{2.png}}
 \caption{Generated Output after 100 Steps}
-\label{fig}
+\label{fig2}
 \end{figure}
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=75mm]{3.png}}
 \caption{Generated Output after 35000 Steps}
-\label{fig}
+\label{fig3}
 \end{figure}
 
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=60mm]{5.png}}
 \caption{Generated Translated Output after 1 Epoch}
-\label{fig}
+\label{fig4}
 \end{figure}
 
 \subsection{CycleGAN Experimentation Results}
@@ -135,7 +134,7 @@ o = sigmoid(W^{[L]}h^{[L]}+b{[L]})
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=60mm]{4.png}}
 \caption{Generated Output after 50 Epochs}
-\label{fig}
+\label{fig5}
 \end{figure}
 
 \subsection{Classifier Experimentation Results}
@@ -143,26 +142,26 @@ o = sigmoid(W^{[L]}h^{[L]}+b{[L]})
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=80mm]{plot_orig.png}}
 \caption{Classification metrics for classifier trained on \textbf{original dataset}}
-\label{fig}
+\label{fig6}
 \end{figure}
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=80mm]{plot_250.png}}
 \caption{Classification metrics for classifier trained on \textbf{original+250 GAN-based}}
-\label{fig}
+\label{fig7}
 \end{figure}
 
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=80mm]{plot_500.png}}
 \caption{Classification metrics for classifier trained on \textbf{original+250 GAN-based}}
-\label{fig}
+\label{fig8}
 \end{figure}
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=80mm]{plot_1000.png}}
 \caption{Classification metrics for classifier trained on \textbf{original+250 GAN-based}}
-\label{fig}
+\label{fig9}
 \end{figure}
 
 \begin{table}[h!]
@@ -190,7 +189,6 @@ Recall   &    1.0   &    0.5   &    1.0   &   0.4   &    1.0   &    1.0   &    1
 \end{table}
 
 \section{Conclusion}
-
 
 
 \bibliographystyle{plain} % We choose the "plain" reference style
