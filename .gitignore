@@ -1,6 +1,9 @@
 # Jupyter Checkpoints
 .ipynb_checkpoints/
 
+# VsCode
+.vscode/
+
 # LaTex files
 *.aux
 *.bbl
@@ -9,3 +12,7 @@
 *.fls
 data/*/*.log
 *.synctex.gz
+*.nav
+*.snm
+*.toc
+data/*/*.out
