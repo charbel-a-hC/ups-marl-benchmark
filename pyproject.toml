@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "ups-marl-benchmark"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "Multi-Agent Reinforcement Learning algorithms benchmark on the highway-env"
+authors = ["Charbel Abi Hana <charbel-a-h@outlook.com>"]
 
 [tool.poetry.dependencies]
 python = "3.7.5"
