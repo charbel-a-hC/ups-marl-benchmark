@@ -1,7 +1,3 @@
-#FROM pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
-#FROM pytorch/pytorch:1.9.0-cuda10.2-cudnn7-runtime
-#FROM pytorch/pytorch:1.8.1-cuda10.2-cudnn7-runtime
-
 #FROM nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
 FROM nvidia/cuda:11.2.1-cudnn8-devel-ubuntu18.04
 
