@@ -7,7 +7,7 @@ authors = ["Charbel Abi Hana <charbel-a-h@outlook.com>"]
 [tool.poetry.dependencies]
 python = "3.7.5"
 gym = "0.22.0"
-torch = "1.11.0"
+torch = { url = "http://download.pytorch.org/whl/cu111/torch-1.10.0%2Bcu111-cp37-cp37m-linux_x86_64.whl" }
 jupyter = "1.0.0"
 highway-env = "1.5"
 tensorboardX = "2.2"
