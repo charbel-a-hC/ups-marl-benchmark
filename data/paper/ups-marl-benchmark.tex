@@ -11,13 +11,11 @@
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
 
-\title{Multi-Agent Reinforcement Learning Benchmark on Highway Environment for Autonomous Driving\\
-{\footnotesize Université Paris-Saclay Machine Vision Project}
-\thanks{Identify applicable funding agency here. If none, delete this.}
-}
+\title{Multi-Agent Reinforcement Learning Benchmark on Highway Environment for Autonomous Driving\\}
+
 
 \author{\IEEEauthorblockN{Charbel Abi Hana}
-\IEEEauthorblockA{\textit{Department of Electrical Engineering} \\
+\IEEEauthorblockA{\textit{M1 International Track in Electrical Engineering} \\
 \textit{Université Paris-Saclay}\\
 Paris, France \\
 charbel-a-h@outlook.com}
@@ -26,24 +24,60 @@ charbel-a-h@outlook.com}
 \maketitle
 
 \begin{abstract}
-This is the abstract of the paper
+The rise of deep learning paved the way for the development of deep Reinforcement Learning methods in control, navigation and autonomous driving.
+The domain of Reinforcement Learning (RL) has become a powerful learning framwork capable of learning complex policies in high-dimensional environments. In this research project
+we aim to benchmark some of the widely used deep reinforcement learning methods on a simulated multi-agent highway environment. We will benchmark two decentralized algorithms; \textbf{IDQN} and \textbf{IPPO} 
+which will control autonmously driven vehicles in a high density and high speed highway full of road (human driven) vehicles.  
 \end{abstract}
 
 \begin{IEEEkeywords}
-
+Reinforcement Learning, Autonomous Driving, IDQN, IPPO
 \end{IEEEkeywords}
 
 \section{Introduction}
-hello this is a test in the paper\cite{DBLP:journals/corr/ZhuPIE17}, in this text i am going
-to cite another paper exactly here\cite{https://doi.org/10.48550/arxiv.1411.1784}. 
+Autonomous driving systems constitute of multiple perception level tasks that have now achieved high precision on account of deep learning architectures. 
+Besides the perception, autonomous driving systems constitute of multiple tasks where classical supervised 
+learning methods are no more applicable. First, when the prediction of the agent's action changes future 
+sensor observations received from the environment under which the autonomous driving agent operates, for 
+example the task of optimal driving speed in an urban area. Second, supervisory signals such as time 
+to collision, lateral error with respect to optimal trajectory of the agent, represent the dynamics of the 
+agent, as well uncertainty in the environment. Such problems would require defining the stochastic cost 
+function to be maximized. Third, the agent is required to learn new configurations of the environment, as 
+well as to predict an optimal decision at each instant while driving in its environment. 
+This represents a high dimensional space given the number of unique configurations under which the agent and environment are observed, this is combinatorially
+large. In such cases, we will solve the decision making process by formalizing it under the classical settings of Reinforcement Learning where an agent is required
+to optimally act in a given environment given a representation of that environment at a certain time step. The optimal set of actions taken by the agent is called the policy.
+In this research project, we will define the basic building blocks of a Reinforcement Learning algorithm, provide two implementations of those algorithms which leverage deep learning
+through multi-layered perceptron or convolution neural networks like the \textbf{IDQN} and \textbf{IPPO} which are direct extensions of the well-known Deep-Q-Learning (DQN\cite{https://doi.org/10.48550/arxiv.1312.5602}) and Proximal Policy Optimization (PPO\cite{https://doi.org/10.48550/arxiv.1707.06347}) respectively on a multi-agent level.
+The performance of each algorithm will be tested on an OpenAI Gym environment called \textit{Highway-env} which simulates real world driving on an n-lane highway.
 
-\section{Related Work}
+\section{Background}
 
+\subsection{Reinforcement Learning}
 
-\section{Methods}
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=60mm]{images/rl_diag.png}}
+\caption{Generated Output after 50 Epochs}
+\label{fig5}
+\end{figure}
 
-\subsection{Conditional Generative adversarial network(GANs)}%Change it to urs
+\subsection{Multi-Agent Reinforcement Learning}
 
+\subsection{Deep Q-Learning}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=80mm]{images/DQN-Algorithm.png}}
+\caption{Deep Q-Learning Algorithm}
+\label{fig4}
+\end{figure}
+
+\subsection{Proximal Policy Optimization}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=80mm]{images/ppo_algorithm.png}}
+\caption{Proximal Policy Optimization Algorithm}
+\label{fig6}
+\end{figure}
 
 \begin{equation}
 \min_{G}\max_{D}\mathcal V_{\text{GAN}}\left(D, G \right) = \end{equation}
@@ -59,9 +93,6 @@ L_D = - \sum_{x \in \chi, z \in \zeta} \log(D(x)) + \log(1 - D(G(z))) \tag{6}
 L_G = - \sum_{z \in \zeta} \log(D(G(z)) \tag{7}
 \end{equation}
 
-\subsection{Model Architecture}
-
-\subsubsection{Generator}
 
 \begin{equation}
 h^{[i]} = LeakyRELU(W^{[i-1]}h^{[i-1]}+b{[i-1]})\label{Gen LeakyRELU}
@@ -72,7 +103,6 @@ o =\tanh(W^{[L]}h^{[L]}+b{[L]})
 \end{equation}
 Where L is the final layer.
 
-\subsubsection{Discriminator}
 \begin{math}h[0]\end{math} denote the input
 image, \begin{math}W [j]\end{math} and \begin{math}b[j]\end{math} denoting the weight matrix and the bias vector in the L output layer, we have:
 \begin{equation}
@@ -80,90 +110,39 @@ o = sigmoid(W^{[L]}h^{[L]}+b{[L]})
 \end{equation}
 
 
-\subsubsection{Classifier}
+\section{Environment}
 
-\section{Experiments}
-\subsection{Dataset}
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=75mm]{images/1.png}}
+\begin{figure}
+\centerline{\includegraphics[width=75mm]{images/highway-env.png}}
 \caption{Random Cows and Horses Images from Original Dataset}\label{fig1}
 \end{figure}
 
-\subsection{Evaluation Metrics}\label{AA}
+\subsection{Action Space}
 
-
-\subsection{Experimentation Details}
-
-
-\subsection{GAN Experimentation Results}
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=75mm]{images/2.png}}
+\begin{figure}
+\centerline{\includegraphics[width=0.3\linewidth]{images/action_space.png}}
 \caption{Generated Output after 100 Steps}
 \label{fig2}
 \end{figure}
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=75mm]{images/3.png}}
+\subsection{Observation Space}
+
+\begin{figure}
+\centerline{\includegraphics[width=80mm]{images/observation_space.png}}
 \caption{Generated Output after 35000 Steps}
 \label{fig3}
 \end{figure}
 
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=60mm]{images/5.png}}
-\caption{Generated Translated Output after 1 Epoch}
-\label{fig4}
-\end{figure}
-
-\subsection{CycleGAN Experimentation Results}
-
-\begin{itemize}
-    \item Pass real images through the generators and get the generated images
-    \item Pass the generated images back to the generators to check if we can predict the original image from the generated image.
-    \item Do an identity mapping of the real images using the generators.
-    \item Pass the generated images in 1) to the corresponding discriminators.
-    \item Calculate the generators total loss (adverserial + cycle + identity)
-    \item Calculate the discriminators loss
-    \item Update the weights of the generators
-    \item Update the weights of the discriminators
-    \item Return the losses in a dictionary.
-\end{itemize}
+\subsection{Reward}
 
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=60mm]{images/4.png}}
-\caption{Generated Output after 50 Epochs}
-\label{fig5}
-\end{figure}
+\section{Experimentation and Results}
 
-\subsection{Classifier Experimentation Results}
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=80mm]{images/plot_orig.png}}
-\caption{Classification metrics for classifier trained on \textbf{original dataset}}
-\label{fig6}
-\end{figure}
-
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=80mm]{images/plot_250.png}}
-\caption{Classification metrics for classifier trained on \textbf{original+250 GAN-based}}
-\label{fig7}
-\end{figure}
+\subsection{Evaluation Metrics}
 
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=80mm]{images/plot_500.png}}
-\caption{Classification metrics for classifier trained on \textbf{original+250 GAN-based}}
-\label{fig8}
-\end{figure}
+\subsection{Results}
 
-\begin{figure}[htbp]
-\centerline{\includegraphics[width=80mm]{images/plot_1000.png}}
-\caption{Classification metrics for classifier trained on \textbf{original+250 GAN-based}}
-\label{fig9}
-\end{figure}
 
 \begin{table}[h!]
 \centering
