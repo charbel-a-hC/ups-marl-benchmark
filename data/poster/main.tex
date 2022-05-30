@@ -128,7 +128,7 @@
   \begin{block}{Introduction}
 \textbf{The domain of Reinforcement Learning has become a powerful learning framwork capable of learning
     complex policies in high dimensional environments. 
-    Reinforcement learning models learn from an environment. The environment has a set of rules and is usually assumed to be deterministic. A reinforcement learning model interacts with the environment through an agent. The agent has a state in the environment, and the agent can perform actions that change the state of the agent in the environment.
+    Reinforcement learning models learn from an environment. The environment has a set of rules and is usually assumed to be deterministic. A reinforcement learning model interacts with the environment through an agent. The agent can perform actions that change its state in the environment.
 \\}
 \begin{figure}
     \vspace*{0.2cm}
@@ -143,8 +143,7 @@
 \end{block}
           
 \begin{block}{The Environment}
-\textbf{The environment is based on OpenAI's Gym library for simulation environments. It is a simple python environment
-    simulating autonmously-driven vehicles and human driven vehicles. We can configure the environment to obtain 3 controlled vehicles
+\textbf{The environment is based on OpenAI's Gym library for simulation environments. It simulates autonmously-driven vehicles and human driven vehicles. We configure the environment to obtain 3 controlled vehicles
     and 10 human vehicles. 
 }
 
@@ -158,7 +157,7 @@
 \begin{block}{Action/Observation Space}
 \textbf{The action space is configured to be discrete. The availability of the actions depends on the positioning of the agent
     in the environment. The actions that each RL agent in the envrionemnt can take are \textit{lane\_left},\textit{lane\_right},
-    \textit{idle}, \textit{faster} and \textit{slower}.}
+    \textit{idle}, \textit{faster} and \textit{slower}.\\}
 \textbf{We'll be using the \textit{KinematicObservation} which essentially is  $V*F$  array where $V$  
 represents a list of nearby vehicles and $F$ represents the feature being the $x-y$  
 positions and velocities. We can also add the vehicle's orientation. 
@@ -167,12 +166,12 @@ positions and velocities. We can also add the vehicle's orientation.
 \begin{figure}[!tbp]
     \vspace*{0.2cm}
     \centering
-    \begin{minipage}[b]{0.55\textwidth}
+    \begin{minipage}[b]{0.5\textwidth}
       \includegraphics[width=\textwidth]{images/observation_space.png}
       \caption{Observation Space}
     \end{minipage}
     \hfill
-    \begin{minipage}[b]{0.25\textwidth}
+    \begin{minipage}[b]{0.26\textwidth}
       \includegraphics[width=\textwidth]{images/action_space.png}
       \caption{Action Space}
     \end{minipage}
@@ -197,30 +196,34 @@ where  $v$, ${v}_{\min}$ and ${v}_{\max}$  are the current, minimum and maximum 
  \end{block}
                
 \begin{block}{Decentralized Algorithms}
- 
-    \textbf{}
-
+    \begin{itemize}
+        \item \textbf{IDQN - independent DQN agents, one per autonomously-driven car, each with convolution layers.}
+        \begin{figure}[!ht]
+            \vspace*{0.1cm}
+            \includegraphics[width=0.7\linewidth, height=0.4\linewidth]{images/DQN-Algorithm.png}
+        \end{figure}
+        \item \textbf{IPPO - independent PPO agents with similar neural network as the DQN agents.}
+        \begin{figure}[!ht]
+            \vspace*{0.1cm}
+            \includegraphics[width=0.7\linewidth, height=0.4\linewidth]{images/ppo_algorithm.png}
+        \end{figure}
+    \end{itemize}
  \end{block} 
  
-\begin{block}{Centralized Algorithms}
+\begin{block}{Results}
+    \textbf{The metrics used to compare both algorithms was the score over an episode. The reward is noisy as it is highly dependant of model
+    hyperparameters but an overall convergence can be seen.}
+
+\end{block} 
+
+\begin{block}{Future Improvements}
     \begin{itemize}
-      \item \textbf{Dataset management to split source and training datas}
-      \item \textbf{DeepJDOT training stability : best accuracy ~25\% }
-      \item \textbf{Implementation of EMD (Optimal transport solver)}
-      \item \textbf{Hyperparamters Searching and Fine tuning}
+      \item \textbf{Add centralized algorithms where agents communicate with one centralized controller}
+      \item \textbf{Extend environment to highway merging and intersection handling}
     \end{itemize}
 \end{block} 
 
-\begin{block}{Results}
-    \begin{itemize}
-      \item \textbf{Dataset management to split source and training datas}
-      \item \textbf{DeepJDOT training stability : best accuracy ~25\% }
-      \item \textbf{Implementation of EMD (Optimal transport solver)}
-      \item \textbf{Hyperparamters Searching and Fine tuning}
-    \end{itemize}
-\end{block} 
- 
-\end{column}%fim coluna 2
+\end{column}
 \begin{column}{\sepmargin} \end{column}
 \end{columns} 
 \end{frame} 
