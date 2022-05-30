@@ -54,64 +54,111 @@ The performance of each algorithm will be tested on an OpenAI Gym environment ca
 \section{Background}
 
 \subsection{Reinforcement Learning}
+Reinforcement Learning is a Machine Learning discipline where it uses many well-established methods of supervised learning such as deep neural networks for function approximation, stochastic gradient descent and backpropagation to learn data representations.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=60mm]{images/rl_diag.png}}
-\caption{Generated Output after 50 Epochs}
+\caption{Generic Reinforcement Learning algorithm diagram}
 \label{fig5}
 \end{figure}
+Reinforcement learning models learn from an environment. The environment has a set of rules and is usually assumed to be deterministic. A reinforcement learning model interacts with the environment through an agent. The agent has a state in the environment, and the agent can perform actions that change the state of the agent in the environment.
+When the agent takes an action, the environment will receive this as an input and will output the resulting state and a reward (see diagram above). In other machine learning problems we usually start by defining a loss function, then we look to optimize. In reinforcement learning, we cannot immediately do that. To help us formulate a loss, we can start by looking at the rewards given back by the environment.
+An agent interacts with an environment through actions, these actions change the state of the environment. The goal of the model is to determine what actions will lead to the maximum reward.
 
+To determine the best action, reinforcement learning works by estimating the value of actions. The value of an action indicates how good an action is.
+The value of an action is defined as the sum of the immediate reward received by taking an action plus the expected value of the resulting state multiplied by a scaling term. In other words, the value of an action is how good the next state will be after taking that action, plus the expected future reward from that new state.
+Reinforcement learning models update their value function by interacting with the environment, choosing an action, looking at the new state, looking at the reward then updating.
+
+Aside from the value function, the model needs to learn a policy.
+The policy of the algorithm is how it chooses what action to take based on the value of the current state.
+Reinforcement learning algorithms want to evaluate states as best as possible (value function) to help them make decisions (policy) that lead to the maximum reward.
 \subsection{Multi-Agent Reinforcement Learning}
+Multi-agent reinforcement learning studies how multiple agents interact in a common environment. That is, when these agents interact with the environment and one another, can we observe them collaborate, coordinate, compete, or collectively learn to accomplish a particular task. It can be further broken down into three broad categories:
+\begin{itemize}
+    \item Cooperative: All agents working towards a common goal
+    \item Competitive: Agents competing with one another to accomplish a goal
+\end{itemize}
 
-\subsection{Deep Q-Learning}
+Some mix of the two In addition, we can represent multi-agent problems in a centralized algorithm that communicates with the agents in the environment making all of their respective observations constantly available to the central algorithm. Another aproach, which has shown more promise, is to consider each agent as an independent agent and each agent learns based on the reward function which deviates the training to a shared objective.
+\subsection{Q-Learning/Deep Q-Learning}
+Reinforcement learning is all about the value function (how good our state/actions are). The models learn sequentially by integrating with the environment for a number of episodes. Episodes can be thought of as epochs in reinforcement learning, and in the chess example they would indicate the number of complete games the agent trains for.
+\subsubsection{Tabular Q-Learning}
+Q-learning is an off policy reinforcement learning algorithm that seeks to find the best action to take given the current state. It's considered off-policy because the q-learning function learns from actions that are outside the current policy, like taking random actions, and therefore a policy isn't needed. More specifically, q-learning seeks to learn a policy that maximizes the total reward.
+
+The $q$ in q-learning stands for quality. Quality in this case represents how useful a given action is in gaining some future reward.
+
+When q-learning is performed we create what's called a q-table or matrix that follows the shape of [state, action] and we initialize our values to zero. We then update and store our q-values after an episode. This q-table becomes a reference table for our agent to select the best action based on the q-value. An agent interacts with the environment in 1 of 2 ways. The first is to use the q-table as a reference and view all possible actions for a given state. 
+The agent then selects the action based on the max value of those actions. This is known as exploiting since we use the information we have available to us to make a decision.
+
+The second way to take action is to act randomly. This is called exploring. Instead of selecting actions based on the max future reward we select an action at random. Acting randomly is important because it allows the agent to explore and discover new states that otherwise may not be selected during the exploitation process. We can balance the exploration/exploitation by adjusting the discount factor shown in the formula below:
+
+\begin{equation}
+    {Q}^{new}(s_{t}, a_{t}) \leftarrow {Q}^{old}(s_{t}, a_{t}) + \alpha * (r_{t} + \lambda*\max Q(s_{t+1}, a) - Q(s_{t}, a_{t}))
+\end{equation}
+
+Where, 
+\begin{itemize}
+    \item ${Q}^{old}(s_{t}, a_{t})$ is the old value
+    \item $\alpha$ is the learning rate
+    \item $r_{t}$ is the current reward
+    \item $\lambda$ is the discount factor
+    \item $\max Q(s_{t+1}, a)$ is the estimate of optimal future value
+\end{itemize}
+
+\subsubsection{Deep Q-Learning}
+The Q-learning method that we've reviewed above solves the issue with iteration over the full set of states in the environment, but still can struggle with situations when the count of the observable set of states is very large. As a solution to this problem, we can use a nonlinear representation that maps both state and action onto a value. In machine learning this is called a \textbf{regression problem}. The concrete way to represent and train such a representation can vary, 
+but, we will be using a deep neural network with Conolutional layers and Dense layers. We will be building on top of a DQN implementation developed by PFRL\cite{JMLR:v22:20-376}.
+The algorithm for the Deep Q-learning method is shown below.
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[width=80mm]{images/DQN-Algorithm.png}}
+\centerline{\includegraphics[width=1.0\linewidth]{images/DQN-Algorithm.png}}
 \caption{Deep Q-Learning Algorithm}
 \label{fig4}
 \end{figure}
 
 \subsection{Proximal Policy Optimization}
+Policy gradient methods work by computing an estimator of the policy gradient and plugging it
+into a stochastic gradient ascent algorithm. The optimization objective of Policy Gradient methods defined as following:
+
+\begin{equation}
+    {L}^{PG}(\theta) = {\hat{\mathbb{E}}}_{t}[\log\pi_{\theta}({a}_{t} | {s}_{t})\hat{A}_{t}]
+\end{equation}
+
+Where,
+\begin{itemize}
+    \item ${L}^{PG}(\theta)$ is the policy loss
+    \item $\log\pi_{\theta}({a}_{t} | {s}_{t})$ is the $\log$ of the probabilities from the output of the policy network
+    \item $\hat{A}_{t}$ is the estimate of the relative value of selected action.
+\end{itemize}
+
+The policy $\pi_{\theta}$ is the neural network that takes the state observation from an environment as input and suggests actions to take as an output.
+The advantage is an estimation, hence the hat over A, of the relative value for selected action in the current state. It is computed as a discounted reward (Q) — value function, where the value function basically gives an estimate of discounted sum of reward. When training, this neural net representing the value function will frequently be updated using the experience our agent collects in an environment.
+As much appealing it is to constantly perform gradient descent steps in one batch of collected experience, it will often update the parameters so far outside of the range that leads to \textbf{destructively large policy updates}.
+\subsubsection{Trust Region Policy Optimization}
+One of the approaches to prevent such destructive policy updates was Trust Region Policy Optimization\cite{https://doi.org/10.48550/arxiv.1502.05477}.
+In this paper, the authors implemented an algorithm to limit the policy gradient step so it does not move too much away from the original policy, causing overly large updates that often ruin the policy altogether.
+\subsubsection{Clipped Surrogate Objective}
+Proximal Policy Optimization attempts to simplify the optimization process while retaining the advantages of TRPO.
+One of this paper's main contribution is the clipped surrogate objective:
+\begin{equation}
+    {L}^{PG}(CLIP) = {\hat{\mathbb{E}}}_{t}[\min({r}_{t}(\theta)\hat{A}_{t},clip({r}_{t}(\theta), 1-\epsilon, 1+\epsilon)\hat{A}_{t})]
+\end{equation}
+Here, the expectation over a minimum of two terms is computed: normal PG objective and clipped PG objective. The key component comes from the second term where a normal PG objective is truncated with a clipping operation between 1-epsilon and 1+epsilon, epsilon being the hyperparameter.
+The final loss function by summing this clipped PPO objective and two additional terms:
+\begin{equation}
+    {L}^{PG}(CLIP+VF+S) = {\hat{\mathbb{E}}}_{t}[L^{CLIP}_{t}(\theta) - c_{1}L^{VF}_{t}(\theta) + c_{2}S[\pi_{\theta}](s_{t})]
+\end{equation}
+The $c_{1}$ and $c_{2}$ are hyperparameters. The first term is a mean square error of the value function in charge of updating the baseline network. The second term, which may look unfamiliar, is an entropy term used to ensure enough exploration for our agents. This term will push the policy to behave more spontaneously until the other part of the objective starts dominating.
+The algorithm altogether for multiple epoch updating is shown below.
 
 \begin{figure}[htbp]
-\centerline{\includegraphics[width=80mm]{images/ppo_algorithm.png}}
+\centerline{\includegraphics[width=1.0\linewidth]{images/ppo_algorithm.png}}
 \caption{Proximal Policy Optimization Algorithm}
 \label{fig6}
 \end{figure}
 
-\begin{equation}
-\min_{G}\max_{D}\mathcal V_{\text{GAN}}\left(D, G \right) = \end{equation}
-\begin{align*}
- \mathbb E_{x \sim p_{\text{data}\left( x\right) }}\left[ \log \left\{ D\left( x \right) \right\} \right] + \mathbb E_{z\sim p_{z}\left( z\right)}\left[ \log\left\{ 1 - D\left( G\left( z\right) \right) \right\}\right].   
-\end{align*}
-
-where \begin{math}G : R^{100} \longrightarrow R^{16,384}\end{math}
-\begin{equation}
-L_D = - \sum_{x \in \chi, z \in \zeta} \log(D(x)) + \log(1 - D(G(z))) \tag{6}
-\end{equation}
-\begin{equation}
-L_G = - \sum_{z \in \zeta} \log(D(G(z)) \tag{7}
-\end{equation}
-
-
-\begin{equation}
-h^{[i]} = LeakyRELU(W^{[i-1]}h^{[i-1]}+b{[i-1]})\label{Gen LeakyRELU}
-\end{equation}
-\begin{math}\alpha \end{math}, with h[i] \begin{math}\epsilon R^{16\alpha2^i}\end{math} and we output the vector o \begin{math}\epsilon R^{16,384}\end{math} via
-\begin{equation}
-o =\tanh(W^{[L]}h^{[L]}+b{[L]})
-\end{equation}
-Where L is the final layer.
-
-\begin{math}h[0]\end{math} denote the input
-image, \begin{math}W [j]\end{math} and \begin{math}b[j]\end{math} denoting the weight matrix and the bias vector in the L output layer, we have:
-\begin{equation}
-o = sigmoid(W^{[L]}h^{[L]}+b{[L]})
-\end{equation}
-
-
 \section{Environment}
-
+The environment used in this research project is \textit{highway-env}
 \begin{figure}
 \centerline{\includegraphics[width=75mm]{images/highway-env.png}}
 \caption{Random Cows and Horses Images from Original Dataset}\label{fig1}
