@@ -32,6 +32,7 @@
 \usepackage{transparent}
 \usepackage[square,numbers]{natbib}
 \usepackage{url}
+\usepackage{graphicx}
 \bibliographystyle{abbrvnat}
 \renewcommand{\vec}[1]{\ushort{#1}}
 \renewcommand{\vec}[1]{\mathbf{#1}}
@@ -87,12 +88,12 @@
 \setbeamertemplate{frametitle}[default][left]
 %\setmainfont{Georgia}
 
-\title{Deep Optimal Transport for Domain Adaptation Application to Vehicle Re-Identification}
+\title{Multi-Agent Reinforcement Learning Benchmark for Traffic Control}
 %small{Projeto  RED n.6, homologado, Edital 32/2014 PROGRAD - Produção de Recursos Educacionais Digitais]}\\}
 
-\author{\textbf{Yujin CHO, Israfel SALAZAR}} % Author(s)
+\author{\textbf{Charbel ABI HANA}} % Author(s)
 
-\institute{M1 E3A @ Université Paris-Saclay. Paris, France} % Institution(s)
+\institute{M1 International Track in Electrical Engineering @ Université Paris-Saclay. Paris, France} % Institution(s)
 %------------------------
 
 \usepackage[absolute,overlay]{textpos}
@@ -125,89 +126,92 @@
 \begin{column}{\onecolwid} % The first column
 \vspace{1em}
   \begin{block}{Introduction}
-\textbf{Vehicle re-Identification is the task of finding the queried vehicle from the non-overlapping cameras, and the goal of attribute recognition is to predict the presence of a set of attributes from an image. It is part of smart city concept that aims to improve the quality of life of city dwellers by making the city more adaptive and efficient, using new technologies that are based on an ecosystem of objects and services.}
+\textbf{The domain of Reinforcement Learning has become a powerful learning framwork capable of learning
+    complex policies in high dimensional environments. 
+    Reinforcement learning models learn from an environment. The environment has a set of rules and is usually assumed to be deterministic. A reinforcement learning model interacts with the environment through an agent. The agent has a state in the environment, and the agent can perform actions that change the state of the agent in the environment.
+\\}
+\begin{figure}
+    \vspace*{0.2cm}
+    \includegraphics[width=0.6\linewidth]{images/rl_diag.png}
+    \end{figure}
+
+\textbf{Road tests for autonomous driving algorithms hasn't been widely applied due to safety reasons, therefore we use
+    intricate simulators like OpenAI's Gym, PettingZoo, SUMO-RL and many others. In this project, we will benchmark known Reinforcement Learning
+    models on a highway environment based on OpenAI Gym in which we simulate a multi-agent environment where multiple autonomously driven cars will navigate as fast as possible
+    on a highway while avoiding collisions with human-driven cars.}
+
 \end{block}
           
-\begin{block}{Define the Problem}
-\textbf{For each vehicle, there are big intra-class difference and learning all class distributions would need a huge amount of data. We proposed to train a model using only the front and rear view of vehicles, our hypotheses was that using domain adaptation we would be able to obtain good results in the vehicle re-identification problem for different distributed datasets.}
+\begin{block}{The Environment}
+\textbf{The environment is based on OpenAI's Gym library for simulation environments. It is a simple python environment
+    simulating autonmously-driven vehicles and human driven vehicles. We can configure the environment to obtain 3 controlled vehicles
+    and 10 human vehicles. 
+}
 
 \begin{figure}
 \vspace*{0.2cm}
-\includegraphics[width=0.45\linewidth]{images/compil.png}
+\includegraphics[width=0.6\linewidth]{images/highway-env.png}
 \end{figure}
 
 \end{block}    
           
-\begin{block}{Objectives}
-\textbf{With a limited amount of data using a dataset created using few cameras (view of vehicles), implement the domain adaptation algorithm using optimal transport to improve accuracy of model in unseen and with different distribution cameras ).}
+\begin{block}{Action/Observation Space}
+\textbf{The action space is configured to be discrete. The availability of the actions depends on the positioning of the agent
+    in the environment. The actions that each RL agent in the envrionemnt can take are \textit{lane\_left},\textit{lane\_right},
+    \textit{idle}, \textit{faster} and \textit{slower}.}
+\textbf{We'll be using the \textit{KinematicObservation} which essentially is  $V*F$  array where $V$  
+represents a list of nearby vehicles and $F$ represents the feature being the $x-y$  
+positions and velocities. We can also add the vehicle's orientation. 
+}
+
+\begin{figure}[!tbp]
+    \vspace*{0.2cm}
+    \centering
+    \begin{minipage}[b]{0.55\textwidth}
+      \includegraphics[width=\textwidth]{images/observation_space.png}
+      \caption{Observation Space}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.25\textwidth}
+      \includegraphics[width=\textwidth]{images/action_space.png}
+      \caption{Action Space}
+    \end{minipage}
+  \end{figure}
+
 \end{block}
 
-\begin{block}{What is optimal transport?}
+\end{column}
 
-\begin{minipage}{0.4\textwidth}
-    \begin{figure}[H]
-        \includegraphics[width=0.7\linewidth]{images/gm.jpg}
-        \caption{Gaspard Monge}
-    \end{figure}
-\end{minipage} \hfill
-\begin{minipage}{0.6\textwidth}
-    \textbf{Optimal Transport problem allows us to compare probability distributions in a geometrically manner. We search for the most economical way, for example in distance, to transport the distribution of a set of data to another using the geometry of the feature space.}
-\end{minipage}
-
-\begin{figure}
-    \includegraphics[width=0.45\linewidth]{images/OT_shovel.png}
-    \caption{Earth mover distance}
-\end{figure}
-
-\textbf{The earth mover's distance (EMD) is a measure of the distance between two probability distributions over a region D (Also known as the Wasserstein metric). The EMD is the minimum cost to move from distribution P(x) to Q(y)}
-\end{block}
-
-\end{column} %fim coluna 1    
-\begin{column}{\sepwid}\end{column} % separador coluna
+\begin{column}{\sepwid}\end{column}
 \begin{column}{\onecolwid} %The second column
 \vspace{1em}
- \begin{block}{DeepJDOT Implementation}
 
-\begin{figure}
-    \vspace*{0.2cm}
-    \includegraphics[width=1\linewidth]{images/jdotnet.PNG}
-    \caption{DeepJDOT architecture}
-\end{figure}
- 
- \textbf{DeepJDOT uses a CNN model to solve the problem of different distribution between source and target. We used a ResNet50 model (pre-trained on ImageNet) divided in 2 parts (g = feature extractor and f = classifier).\\ }
- 
-\begin{figure}
-    \vspace*{1cm}
-    \includegraphics[width=1\linewidth]{images/jdotalgo.PNG}
-    \caption{DeepJDOT algorithm}
-\end{figure}
-\textbf{Cross Entropy loss is used to back-propagate classifier estimations. The cost function $\gamma$ is computed between the features of source and target, then it's minimized by using EMD. The total loss is then computed and we update the models by backpropagation.}
- 
+ \begin{block}{Reward}
+
+\textbf{The general focus is on two features: a vehicle should progress quickly on the road and should avoid collisions. Thus, the reward function is often composed of a velocity term and a collision term:\\ 
+\begin{equation}
+    R(s,a) = a * \frac{v - {v}_{\min}}{{v}_{\max}-{v}_{\min}} - b * {collision}
+\end{equation}
+where  $v$, ${v}_{\min}$ and ${v}_{\max}$  are the current, minimum and maximum speed of the ego-vehicle respectively, and  $a$, $b$  are two configurable coefficients.}
+
  \end{block}
                
-\begin{block}{Expected results}
+\begin{block}{Decentralized Algorithms}
  
-% \begin{center}
-%     \begin{tabular}{||c|c|c||} 
-%     \hline
-%     ResNet50 & Accuracy Source & Accuracy target\\ [0.5ex] 
-%     \hline\hline
-%     trained on source & $95.6\%$ & $40\%$ \\ 
-%     \hline
-%     trained w/ DeepJDOT & ? & ? \\
-%     \hline
-%    \end{tabular}
-%\end{center}
-    \textbf{Model trained with DeepJDOT method should perform better on target data than model trained only on source data}
-\begin{figure}
-    %\vspace*{1cm}
-    \includegraphics[width=1\linewidth]{images/resultJDOT.PNG}
-    \caption{Top5 result closest result in source dataset}
-\end{figure}
- 
+    \textbf{}
+
  \end{block} 
  
-\begin{block}{Difficulties of implementation}
+\begin{block}{Centralized Algorithms}
+    \begin{itemize}
+      \item \textbf{Dataset management to split source and training datas}
+      \item \textbf{DeepJDOT training stability : best accuracy ~25\% }
+      \item \textbf{Implementation of EMD (Optimal transport solver)}
+      \item \textbf{Hyperparamters Searching and Fine tuning}
+    \end{itemize}
+\end{block} 
+
+\begin{block}{Results}
     \begin{itemize}
       \item \textbf{Dataset management to split source and training datas}
       \item \textbf{DeepJDOT training stability : best accuracy ~25\% }
