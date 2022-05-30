@@ -93,7 +93,7 @@
 
 \author{\textbf{Charbel ABI HANA}} % Author(s)
 
-\institute{M1 International Track in Electrical Engineering @ Université Paris-Saclay. Paris, France} % Institution(s)
+\institute{M1 International Track in Electrical Engineering - Université Paris-Saclay. Paris, France} % Institution(s)
 %------------------------
 
 \usepackage[absolute,overlay]{textpos}
@@ -200,12 +200,12 @@ where  $v$, ${v}_{\min}$ and ${v}_{\max}$  are the current, minimum and maximum 
         \item \textbf{IDQN - independent DQN agents, one per autonomously-driven car, each with convolution layers.}
         \begin{figure}[!ht]
             \vspace*{0.1cm}
-            \includegraphics[width=0.7\linewidth, height=0.4\linewidth]{images/DQN-Algorithm.png}
+            \includegraphics[width=0.7\linewidth, height=0.37\linewidth]{images/DQN-Algorithm.png}
         \end{figure}
         \item \textbf{IPPO - independent PPO agents with similar neural network as the DQN agents.}
         \begin{figure}[!ht]
             \vspace*{0.1cm}
-            \includegraphics[width=0.7\linewidth, height=0.4\linewidth]{images/ppo_algorithm.png}
+            \includegraphics[width=0.7\linewidth, height=0.37\linewidth]{images/ppo_algorithm.png}
         \end{figure}
     \end{itemize}
  \end{block} 
@@ -214,6 +214,19 @@ where  $v$, ${v}_{\min}$ and ${v}_{\max}$  are the current, minimum and maximum 
     \textbf{The metrics used to compare both algorithms was the score over an episode. The reward is noisy as it is highly dependant of model
     hyperparameters but an overall convergence can be seen.}
 
+    \begin{figure}[!tbp]
+        \vspace*{0.2cm}
+        \centering
+        \begin{minipage}[b]{0.5\textwidth}
+          \includegraphics[width=\textwidth]{images/observation_space.png}
+          \caption{Observation Space}
+        \end{minipage}
+        \hfill
+        \begin{minipage}[b]{0.26\textwidth}
+          \includegraphics[width=\textwidth]{images/action_space.png}
+          \caption{Action Space}
+        \end{minipage}
+      \end{figure}
 \end{block} 
 
 \begin{block}{Future Improvements}
