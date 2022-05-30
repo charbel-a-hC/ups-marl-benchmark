@@ -7,6 +7,7 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 \begin{document}
@@ -107,7 +108,7 @@ Where,
 
 \subsubsection{Deep Q-Learning}
 The Q-learning method that we've reviewed above solves the issue with iteration over the full set of states in the environment, but still can struggle with situations when the count of the observable set of states is very large. As a solution to this problem, we can use a nonlinear representation that maps both state and action onto a value. In machine learning this is called a \textbf{regression problem}. The concrete way to represent and train such a representation can vary, 
-but, we will be using a deep neural network with Conolutional layers and Dense layers. We will be building on top of a DQN implementation developed by PFRL\cite{JMLR:v22:20-376}.
+but, we will be using a deep neural network with Conolutional layers and Dense layers. We will be building on top of a DQN implementation developed by PFRL library\cite{JMLR:v22:20-376}.
 The algorithm for the Deep Q-learning method is shown below.
 
 \begin{figure}[htbp]
@@ -149,7 +150,7 @@ The final loss function by summing this clipped PPO objective and two additional
     {L}^{PG}(CLIP+VF+S) = {\hat{\mathbb{E}}}_{t}[L^{CLIP}_{t}(\theta) - c_{1}L^{VF}_{t}(\theta) + c_{2}S[\pi_{\theta}](s_{t})]
 \end{equation}
 The $c_{1}$ and $c_{2}$ are hyperparameters. The first term is a mean square error of the value function in charge of updating the baseline network. The second term, which may look unfamiliar, is an entropy term used to ensure enough exploration for our agents. This term will push the policy to behave more spontaneously until the other part of the objective starts dominating.
-The algorithm altogether for multiple epoch updating is shown below.
+The algorithm altogether for multiple epoch updating is shown below in figure 3.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=1.0\linewidth]{images/ppo_algorithm.png}}
@@ -158,66 +159,114 @@ The algorithm altogether for multiple epoch updating is shown below.
 \end{figure}
 
 \section{Environment}
-The environment used in this research project is \textit{highway-env}
-\begin{figure}
+The environment used in this research project is \textit{highway-env}\cite{highway-env}. This environment is a minimalist python implementation of a highway simulation. There is a multitude of environments present in the package provided by the developers.
+Their environments are based on OpenAI Gym\cite{brockman2016openai}.
+
+\begin{figure}[hbt!]
+\vspace*{0.1cm}
 \centerline{\includegraphics[width=75mm]{images/highway-env.png}}
-\caption{Random Cows and Horses Images from Original Dataset}\label{fig1}
+\caption{Highway Environment in multi-agent configuration}\label{fig1}
 \end{figure}
 
 \subsection{Action Space}
-
-\begin{figure}
+The actions shown in figure 5 below represent the discrete action space of any RL agent. The availability of these actions depends on the positioning of the agent in the environment
+(lane changes at the edges of the roads, or accelerating/decelerating beyond the maximum velocity). Taking an unavailable action is equivalent to taking the \textit{IDLE} action.
+Taking an unavailable action is equivalent to taking the \textit{IDLE} action.
+\begin{figure}[hbt!]
 \centerline{\includegraphics[width=0.3\linewidth]{images/action_space.png}}
 \caption{Generated Output after 100 Steps}
 \label{fig2}
 \end{figure}
 
 \subsection{Observation Space}
-
-\begin{figure}
+We'll be using the \textit{KinematicObservation} which essentially is  $V*F$  array where  $V$ represents a list of nearby vehicles and  $F$  represents the feature being the  $x-y$  positions, velocities and orientation of the autonomously-driven
+vehicles and the road (human-driven) vehicles. One feature vector has the following elements:
+\begin{itemize}
+    \item $presence$: 0/1, Disambiguate agents at 0 offset from non-existent agents.
+    \item $x$: World offset of ego vehicle on the x axis.
+    \item $y$: World offset of ego vehicle on the y axis.
+    \item $v_{x}$: Velocity on the x axis of vehicle.
+    \item $v_{y}$: Velocity on the y axis of vehicle.
+    \item $\cos_{h}$: Trigonometric heading of vehicle.
+\end{itemize}
+A sample of the observation (limited to velocity and positioning) is shown in figure 6 below.
+\begin{figure}[hbt!]
 \centerline{\includegraphics[width=80mm]{images/observation_space.png}}
-\caption{Generated Output after 35000 Steps}
+\caption{KinematicObservation observation space sample}
 \label{fig3}
 \end{figure}
 
 \subsection{Reward}
-
+The general focus is on two features: a vehicle should progress quickly on the road and should avoid collisions. Thus, the reward function is often composed of a velocity term and a collision term:\\ 
+\begin{equation}
+    R(s,a) = a * \frac{v - {v}_{\min}}{{v}_{\max}-{v}_{\min}} - b * {collision}
+\end{equation}
+where  $v$, ${v}_{\min}$ and ${v}_{\max}$  are the current, minimum and maximum speed of the ego-vehicle respectively, and  $a$, $b$  are two configurable coefficients.
+It should be noted that we can wrap this reward function through Gym's \textit{RewardWrapper} inheritence class and we can change the definition of the reward. However, we will refrain for this research project
+as the objective is to benchmark decentralized algorithms on this environment.
 
 \section{Experimentation and Results}
 
+\subsection{Environment Configuration}
+The main configurable parameters of the environment here are:
+\begin{itemize}
+    \item $controlledVehicles$: number of RL agents; 3
+    \item $ObservationType$: Kinematic
+    \item $features$: $[presence, x, y, v_x, v_y, \cos_h]$
+    \item $vehiclesCount$: number of human-driven vehicles; 10
+    \item $vehicleDensity$: density of human-driven vehicles; 5
+\end{itemize}
+
+The main training loop for any implemented algorithm on our configured environment is shown in figure 7.
+
+\begin{figure}[hbt!]
+\centerline{\includegraphics[width=1.0\linewidth]{images/gym_loop.png}}
+\caption{General Gym Environment training loop}
+\label{fig10}
+\end{figure}
+
 \subsection{Evaluation Metrics}
+In this research project, we will mainly use the \textit{avg\_reward} on all 3 agents and we will aggregate a \textit{score} metric
+which keeps track of the summed rewards over one episode. 
 
+\subsection{Decentralized Algorithms}
+As mentioned previously, the two algorithms used for this benchmark are direct extensions of the DQN and IPPO models. We develop the IDQN and IPPO
+models by initializing for each agent in the environment its own network. The observations perceived by each agent may contain information about other agents
+however, communication and rewards sharing isn't implemented. The agents are fully independent in this case.\\
+For the IDQN model, we use the following network;
+\begin{itemize}
+    \item Observation matrix enters a 2D Convolution layer with 64 feature maps and kernel size $(2, 2)$
+    \item Output is followed by LeakyReLU activation function and a flattening layer
+    \item A multi-layer perceptron block is followed with units of 64 and 5 (action space size) with ReLU activation in the hidden layer and a DisceteActionValueHead layer from PFRL for outputing probabilities mapped to the action space.
+\end{itemize}
 
+For the IPPO model, we use the same backbone network with a change to the output head being a SoftmaxCategoricalHead which is also provided by PFRL.
+All the other hyperparameters are left to their default values.
 \subsection{Results}
-
-
-\begin{table}[h!]
-\centering
-\begin{tabular}{| *{9}{c|} }
-    \hline
-\textbf{Metric}    & \multicolumn{2}{c|}{Orig}
-            & \multicolumn{2}{c|}{Orig-250-GAN}
-                    & \multicolumn{2}{c|}{Orig-500-GAN}
-                            & \multicolumn{2}{c|}{Orig-1000-GAN}                \\
-    \hline
--   &   \textbf{train}  &   \textbf{val}  &   \textbf{train}  &   \textbf{val}  &   \textbf{train}  &   \textbf{val}  &   \textbf{train}  &   \textbf{val}  \\
-    \hline
-BCE-Loss   &   0.01  &   5  &   0.01  &   0.7  &  0.01   &  0.7   &   8  &  0.7   \\
-    \hline
-Accuracy   &    1.0   &     0.5  &   1.0    &     0.6  &   1.0    &    0.5   &   0.5    &   0.5    \\
-    \hline
-Precision   &   1.0    &   0.1    &   1.0    &    0.5   &   1.0    &    0.5   &   0.5    &    0.5   \\
-    \hline
-Recall   &    1.0   &    0.5   &    1.0   &   0.4   &    1.0   &    1.0   &    1.0   &  1.0     \\
-    \hline
-
-\end{tabular}
-\caption{Compiled table of Classification Metrics}
-\end{table}
+After training both models on the same environment configurations we obtain the following results (figures 8 and 9) of the score per episode for the IDQN model (on the right) and the IPPO model (on the left).
+The IDQN models showed higher score values comapred to the IPPO models with scores reaching 17 and 5 respectively. When both models are trained for 1000 episodes
+we can clearly see the noise in the obtained result as both algorithms are extremly sensitive to hyperparameter and some tuning can be done to obtain a better augmenting trend in both scores.
+\begin{figure}[hbt!]
+    \vspace*{0.2cm}
+    \centering
+    \begin{minipage}[b]{1.0\linewidth}
+      \includegraphics[width=\textwidth]{images/idqn-res.png}
+      \caption{Score in function of episodes for IDQN model}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{1.0\linewidth}
+      \includegraphics[width=\textwidth]{images/ppo_res.png}
+      \caption{Scores in function of episodes for IPPO model}
+    \end{minipage}
+  \end{figure}
 
 \section{Conclusion}
+In this research project, we attempted to deploy autonomously driven cars in a dense highway environment using deep reinforcement learning methods. The development in this field also contributes to other
+issues like decreasing CO2 emmissions through efficient road navigation, reducing overall traffic congestions and organising intersections. With the current rise in the trend of autonomous vehicles
+benchmarks similar to the one we present are used as a pointer of performance in different environments and different conditions as we continousky aim to generalize machine learning and deep learning models
+on new and unseen environments and data. The field of deep Reinforcement Learning is showing extreme promise in the industry due to the extreme devotion to research. Future additions to this work 
+can include centralized algorithms on the same environment where an orchestrator with visibility on all agents data controls their actions simultaneously.
 
-
-\bibliographystyle{plain} % We choose the "plain" reference style
+\bibliographystyle{ieeetr} % We choose the "plain" reference style
 \bibliography{citations} % Entries are in the refs.bib file
 \end{document}
