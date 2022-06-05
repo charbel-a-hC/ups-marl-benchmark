@@ -23,8 +23,8 @@ And you need to update your `pip`:
 ### Docker
 If you have docker installed:
 ```bash
-docker build . -t ups-gans
-docker run -it --rm -v --runtime=nvidia ${PWD}:/ups-mv-gans ups-gans
+docker build . -t ups-marl-benchmark
+docker run -it --rm -v --runtime=nvidia ${PWD}:/ups-marl-benchmark ups-marl-benchmark
 ```
 ### Local Environment (Ubuntu-18.04) - Poetry
 
