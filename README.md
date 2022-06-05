@@ -8,6 +8,51 @@
 - [ ] Implement intersection-v0 env
 - [ ] Implement racetrack-v0 env
 
+## The Environments
+
+highway-env by [eleurent](https://github.com/eleurent/highway-env)
+
+The environments used:
+
+**highway-v0**
+<p align="center">
+    <img src="docs/highway-env.gif"><br/>
+    <em>The highway-v0 environment.</em>
+</p>
+
+**intersection-v0**
+<p align="center">
+    <img src="docs/intersection-env.gif"><br/>
+    <em>The intersection-v0 environment.</em>
+</p>
+
+**merge-v0**
+<p align="center">
+    <img src="docs/merge-env.gif"><br/>
+    <em>The merge-v0 environment.</em>
+</p>
+
+**roundabout-v0**
+<p align="center">
+    <img src="docs/roundabout-env.gif"><br/>
+    <em>The roundabout-v0 environment.</em>
+</p>
+
+**racetrack-v0**
+<p align="center">
+    <img src="docs/racetrack-env.gif"><br/>
+    <em>The racetrack-v0 environment.</em>
+</p>
+
+## The Agents
+
+### IDQN
+### IPPO
+
+## Benchmark
+
+Results are shared here
+
 ## Environment Setup
 
 Clone and `cd` in the repository before running any of the commands:
