@@ -1,5 +1,11 @@
 # MARL Benchmark on higway-env
 
+## TO-DO
+- [ ] Decentralized Algorithms
+- [ ] Implement merge-v0 env
+- [ ] Implement roundabout-v0 env
+- [ ] Implement intersection-v0 env
+- [ ] Implement racetrack-v0 env
 
 ## Environment Setup
 
