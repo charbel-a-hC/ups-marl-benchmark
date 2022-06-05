@@ -3,3 +3,4 @@
 *.bib linguist-vendored
 *.cls linguist-vendored
 *.sty linguist-vendored
+*.ipynb linguist-vendored
