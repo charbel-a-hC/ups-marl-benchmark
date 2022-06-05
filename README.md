@@ -1,6 +1,7 @@
 # MARL Benchmark on higway-env
 
 ## TO-DO
+- [ ] Implement Log Recording / Model Saving
 - [ ] Decentralized Algorithms
 - [ ] Implement merge-v0 env
 - [ ] Implement roundabout-v0 env
