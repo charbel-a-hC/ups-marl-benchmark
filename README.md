@@ -7,7 +7,7 @@
 - [ ] Implement roundabout-v0 env
 - [ ] Implement intersection-v0 env
 - [ ] Implement racetrack-v0 env
-- Implement some algorithm
+
 ## The Environments
 
 highway-env by [eleurent](https://github.com/eleurent/highway-env)
