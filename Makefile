@@ -26,6 +26,10 @@ env-docker:
 	poetry install
 	poetry show
 
+.PHONY: format
+format:
+	poetry run bash scripts/format.sh
+
 .PHONY: clean
 clean: # Remove Python file artifacts
 	find . -name '*.pyc' -exec rm -rf {} +
